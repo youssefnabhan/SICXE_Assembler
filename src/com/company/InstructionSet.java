@@ -14,22 +14,53 @@ public final class InstructionSet {
 
 
     public static boolean isInstruction(String mnemonic){
-        if(mnemonic.charAt(0) == '+'){
-            mnemonic = mnemonic.split("\\+")[1];
+
+        char indicator = mnemonic.charAt(0);
+        if(!Character.isLetter(indicator)){
+            switch(indicator){
+                case '+':
+                    break;
+                case '&':
+                    break;
+                case '$':
+                    break;
+                default:
+                    return false;
+            }
+             mnemonic = mnemonic.substring(1);
         }
         return set.containsKey(mnemonic);
     }
 
 
     public static Instruction get(String mnemonic){
-        if(mnemonic.charAt(0) == '+'){
-            mnemonic = mnemonic.split("\\+")[1];
-            Instruction instruction = set.get(mnemonic);
-            instruction.setFormat(4);
-            return instruction;
+
+
+        char indicator = mnemonic.charAt(0);
+
+        if(!Character.isLetter(indicator)){
+            mnemonic = mnemonic.substring(1);
+
         }
 
-        return set.get(mnemonic);
+        Instruction instruction = set.get(mnemonic);
+
+        int format = switch (indicator) {
+            case '+' -> 4;
+            case '&' -> 5;
+            case '$' -> 6;
+            default -> instruction.getFormat();
+        };
+        int length = switch (indicator) {
+            case '+' -> 4;
+            case '&' -> 3;
+            case '$' -> 4;
+            default -> instruction.getFormat();
+        };
+
+        instruction.setLength(length);
+        instruction.setFormat(format);
+        return instruction;
     }
 
 

@@ -17,6 +17,12 @@ public class SymbolTable {
         }
 
     }
+    public Integer get(String key){
+        return table.get(key);
+    }
+    public void put(String key,Integer val){
+        table.put(key,val);
+    }
     public String toString(){
         return table.toString();
     }
